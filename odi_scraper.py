@@ -11,14 +11,25 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from datetime import datetime
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+
+
 
 
 def main():
 
     url = 'https://odibets.com/odileague'
 
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome()
+
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
 
     driver.get(url)
 
@@ -81,7 +92,7 @@ def main():
     df['GameWeek_ID'] = df['League No'] +df['Game Week']
 
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    filename = f'C:\\Users\\User\\Documents\\IPTV\\Odi_league_{timestamp}.xlsx' 
+    filename = f'/home/ubuntu/Games_Predictor/Results/Odi_league_{timestamp}.xlsx' 
     df.to_excel(filename, sheet_name="sheet1", index=False)
 
 
